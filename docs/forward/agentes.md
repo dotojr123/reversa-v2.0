@@ -18,7 +18,7 @@ Requirements → Clarify → Quality → Plan → To-Do → Audit → Coding
 Principles and Resume run outside this linear flow.
 ```
 
-There is a `CONTINUAR` checkpoint between agents. Each skill verifies its own preconditions and refuses to run if a required predecessor is missing. `reversa-coding` is the strictest: it aborts unless at least `_reversa_sdd/architecture.md` and `_reversa_sdd/domain.md` exist, to keep the legacy-to-code bridge solid.
+There is a `CONTINUAR` checkpoint between agents. Each skill verifies its own preconditions and refuses to run if a required predecessor is missing. `reversa-coding` is the strictest: it aborts unless `_reversa_sdd/` holds a context anchor, either the legacy pair `architecture.md` + `domain.md` (from `/reversa`) or the greenfield pair `prd.md` + at least one spec in `sdd/` (from `/reversa-new`), to keep the specs-to-code bridge solid.
 
 ---
 

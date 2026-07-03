@@ -18,7 +18,7 @@ Requirements → Clarify → Quality → Plan → To-Do → Audit → Coding
 Principles e Resume rodam fora desse fluxo linear.
 ```
 
-Há um checkpoint `CONTINUAR` entre agentes. Cada skill verifica suas próprias precondições e se recusa a rodar se um predecessor obrigatório está ausente. `reversa-coding` é o mais rigoroso: aborta a menos que pelo menos `_reversa_sdd/architecture.md` e `_reversa_sdd/domain.md` existam, para manter a ponte legado-código sólida.
+Há um checkpoint `CONTINUAR` entre agentes. Cada skill verifica suas próprias precondições e se recusa a rodar se um predecessor obrigatório está ausente. `reversa-coding` é o mais rigoroso: aborta a menos que `_reversa_sdd/` tenha uma âncora de contexto, seja o par de legado `architecture.md` + `domain.md` (do `/reversa`), seja o par greenfield `prd.md` + pelo menos uma spec em `sdd/` (do `/reversa-new`), para manter a ponte specs-código sólida.
 
 ---
 

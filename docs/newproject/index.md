@@ -18,7 +18,12 @@ Activate with:
 /reversa-new
 ```
 
-The orchestrator collects the brief, walks the four functional agents in fixed order, saves a checkpoint between each one, and asks for `CONTINUAR` before advancing. If the session is interrupted, just type `/reversa-new` again: it reads `state.json#newproject_progress` and resumes exactly where it stopped.
+`/reversa-new` has two execution modes:
+
+- **Guided** (default): the orchestrator collects the brief, walks the four functional agents in fixed order, saves a checkpoint between each one, and asks for `CONTINUAR` before advancing. It ends at the SDD specs, handing off to `/reversa-forward`.
+- **Express**: activate with `/reversa-new expresso "<your idea>"` (or pick it in the opening menu). Every question is concentrated in a single interview at the start; after `INICIAR`, the pipeline runs without stops and, once the specs are done, it chains straight into the forward cycle (`requirements → plan → to-do → coding`) until the code is implemented. Doubts that appear along the way are recorded with the 🟡 seal for later review, without interrupting the flow.
+
+If the session is interrupted, in either mode, just type `/reversa-new` again: it reads `state.json#newproject_progress` and resumes exactly where it stopped, honoring the saved mode.
 
 ---
 
@@ -39,9 +44,16 @@ The orchestrator collects the brief, walks the four functional agents in fixed o
        ▼ CONTINUAR
 /reversa-spec-sdd         → _reversa_sdd/sdd/<component>.md
        │
+       ├── guided: handoff, suggests /reversa-forward
+       │
+       ▼ express: continues without stopping
+/reversa-requirements → /reversa-plan → /reversa-to-do → /reversa-coding
+       │
        ▼
-handoff: suggests /reversa-forward
+implemented code in _reversa_forward/<NNN>-<feature>/
 ```
+
+In express mode the `CONTINUAR` pauses in the diagram do not exist: the only confirmation is the `INICIAR` of the opening interview.
 
 The Spec SDD agent is a **vendored** version of the global `sdd-spec` skill, adapted to live inside Reversa: it reads `prd.md`, writes inside `_reversa_sdd/sdd/`, marks every artifact with the 🟡 (planned) seal, and hands off to the Forward pipeline at the end.
 
@@ -62,7 +74,7 @@ The Team writes only inside `_reversa_sdd/` (same folder used by Discovery). Gre
         └── <component>.md       (Spec SDD)
 ```
 
-The orchestrator state lives in `.reversa/state.json` under the `newproject_progress` key, with `stage`, `started_at`, `last_checkpoint_at`, `completed_stages` and the truncated `brief`.
+The orchestrator state lives in `.reversa/state.json` under the `newproject_progress` key, with `mode` (guided or express), `stage`, `started_at`, `last_checkpoint_at`, `completed_stages` and the truncated `brief`. In express mode, `stage` also walks through `forward-requirements`, `forward-plan`, `forward-todo` and `forward-coding`, and the generated feature lives in `_reversa_forward/`.
 
 ---
 

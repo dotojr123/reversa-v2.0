@@ -12,7 +12,7 @@ Pre-checked in the installer.
 
 You already ran `/reversa` and have specs in `_reversa_sdd/`. Now you want to evolve the system: a new feature, an extension, a fix that needs a delta description before it becomes code. Forward takes a free-form sentence ("I want users to export their invoices as PDF") and walks it down the funnel until the file changes are on disk.
 
-`/reversa-coding` refuses to run without at least `_reversa_sdd/architecture.md` and `_reversa_sdd/domain.md`. Without those, the legacy/code bridge would be hollow and Forward would degrade into a generic scaffolding tool.
+`/reversa-coding` requires a context anchor in `_reversa_sdd/`: either the legacy extraction (`architecture.md` + `domain.md`, from `/reversa`) or the greenfield artifacts (`prd.md` + at least one spec in `sdd/`, from `/reversa-new`). Without any anchor, it refuses to run: the code bridge would be hollow and Forward would degrade into a generic scaffolding tool.
 
 ---
 

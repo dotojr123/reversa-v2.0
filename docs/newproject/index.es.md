@@ -18,7 +18,12 @@ Activa con:
 /reversa-new
 ```
 
-El orquestador recoge el brief, conduce los cuatro agentes funcionales en orden fijo, guarda checkpoint entre cada uno y pide `CONTINUAR` antes de avanzar. Si la sesión se interrumpe, basta con escribir `/reversa-new` de nuevo: lee `state.json#newproject_progress` y retoma exactamente donde se detuvo.
+`/reversa-new` tiene dos modos de ejecución:
+
+- **Guiado** (predeterminado): el orquestador recoge el brief, conduce los cuatro agentes funcionales en orden fijo, guarda checkpoint entre cada uno y pide `CONTINUAR` antes de avanzar. Termina en las specs SDD, con handoff a `/reversa-forward`.
+- **Expreso**: actívalo con `/reversa-new expresso "<tu idea>"` o elígelo en el menú inicial. Todas las preguntas se concentran en una entrevista única al inicio; tras el `INICIAR`, el pipeline corre sin pausas y, al concluir las specs, encadena automáticamente con el ciclo forward (`requirements → plan → to-do → coding`) hasta el código implementado. Las dudas que surjan en el camino se registran con el sello 🟡 para revisión posterior, sin interrumpir el flujo.
+
+Si la sesión se interrumpe, en cualquier modo, basta con escribir `/reversa-new` de nuevo: lee `state.json#newproject_progress` y retoma exactamente donde se detuvo, respetando el modo guardado.
 
 ---
 
@@ -39,9 +44,16 @@ El orquestador recoge el brief, conduce los cuatro agentes funcionales en orden 
        ▼ CONTINUAR
 /reversa-spec-sdd         → _reversa_sdd/sdd/<componente>.md
        │
+       ├── guiado: handoff, sugiere /reversa-forward
+       │
+       ▼ expreso: continúa sin parar
+/reversa-requirements → /reversa-plan → /reversa-to-do → /reversa-coding
+       │
        ▼
-handoff: sugiere /reversa-forward
+código implementado en _reversa_forward/<NNN>-<feature>/
 ```
+
+En el modo expreso las pausas `CONTINUAR` del diagrama no existen: la única confirmación es el `INICIAR` de la entrevista inicial.
 
 El agente Spec SDD es una versión **vendored** de la skill global `sdd-spec`, adaptada para vivir dentro de Reversa: lee `prd.md`, escribe en `_reversa_sdd/sdd/`, marca cada artefacto con el sello 🟡 (planificado) y, al concluir, hace handoff al pipeline Forward.
 
@@ -62,7 +74,7 @@ El equipo escribe solo dentro de `_reversa_sdd/` (la misma carpeta usada por Dis
         └── <componente>.md      (Spec SDD)
 ```
 
-El estado del orquestador vive en `.reversa/state.json` bajo la clave `newproject_progress`, con `stage`, `started_at`, `last_checkpoint_at`, `completed_stages` y el `brief` truncado.
+El estado del orquestador vive en `.reversa/state.json` bajo la clave `newproject_progress`, con `mode` (guiado o expreso), `stage`, `started_at`, `last_checkpoint_at`, `completed_stages` y el `brief` truncado. En modo expreso, `stage` también recorre `forward-requirements`, `forward-plan`, `forward-todo` y `forward-coding`, y la feature generada vive en `_reversa_forward/`.
 
 ---
 
