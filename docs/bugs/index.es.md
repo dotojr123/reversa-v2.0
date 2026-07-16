@@ -42,18 +42,23 @@ El Equipo funciona mejor sobre una extracción (`_reversa_sdd/`), pero degrada b
 
 Una carpeta por bug, con **dirección inmutable**: la carpeta nunca se mueve ni se renombra. El status vive en el front matter, nunca en la ruta.
 
+Los bugs se agrupan por **contexto**: la feature, módulo o caso de uso del que habla el usuario ("se rompió el sistema de crédito", "el carrito calcula mal"). La carpeta del contexto no existe hasta que alguien reporta un problema del área, pero nace **inmediatamente** cuando el usuario dice dónde está el problema, para recibir capturas y documentos al instante. TODO lo de esa área vive dentro de ella; nada nace vacío en la raíz.
+
 ```
 _reversa_bugs/
 ├── README.md                 el contrato del proyecto (lifecycle, closure policy, reglas)
 ├── taxonomy.yaml             vocabulario controlado de area/module/feature
-├── bugs/
-│   └── BUG-20260715-A7K3-descuento-duplicado/
-│       ├── bug.md            registro canónico (source of truth)
-│       ├── evidence/         logs, capturas, cápsula de reproducción
-│       ├── debate/           si se abrió: rondas, convergencia, respuesta final
-│       └── fix/              diffs del change set tipado, verificación
-├── inspections/<feature>/    informes del barrido profundo
-└── generated/                vistas regeneradas (nunca editadas a mano)
+└── <contexto>/               ej.: sistema-de-credito/ (creada al primer reporte)
+    ├── intake/               reportes anotados + capturas recibidas ANTES de existir ningún bug
+    ├── bugs/
+    │   └── BUG-20260715-A7K3-descuento-duplicado/
+    │       ├── bug.md        registro canónico (source of truth)
+    │       ├── DONE.md       candado de cierre: presente, la carpeta es de solo lectura para agentes
+    │       ├── evidence/     logs, capturas, cápsula de reproducción
+    │       ├── debate/       si se abrió: rondas, convergencia, respuesta final
+    │       └── fix/          plan.html (plan visual, aprobado ANTES de tocar nada) + diffs del change set
+    ├── inspections/<barrido>/  informes del barrido profundo del contexto
+    └── generated/            vistas del contexto, incluido graph.html (nunca editadas a mano)
 ```
 
 Conceptos centrales del schema:
@@ -63,6 +68,7 @@ Conceptos centrales del schema:
 - **Estados epistemológicos**: la causa raíz y las relaciones entre bugs llevan `hypothesized / supported / confirmed / rejected` con evidencias. Una hipótesis nunca entra al grafo como hecho.
 - **Correction Change Set**: una corrección es un conjunto tipado de cambios (código, test, configuración, migration, reparación de datos, especificación...), porque código sanado no es sistema sanado.
 - **Closure policy**: lo que `resolved` exige depende del perfil del proyecto: software local cierra con tests de regresión pasando; un servicio en producción solo tras la entrega y una ventana de observación sin recurrencia.
+- **Anotar primero, salida visual siempre**: `/reversa-debugger` empieza como escribano (reportes y capturas caen en `intake/` antes de cualquier registro), y las vistas, incluido el `graph.html` autocontenido (nodos clicables, estadísticas, aristas de relación), se generan automáticamente como parte de la documentación. `/reversa-debugger-fix` produce un plan visual de corrección (`fix/plan.html`, con matriz de relaciones con enlaces y el change set propuesto) que el usuario aprueba antes de tocar cualquier archivo, y graba el candado `DONE.md` cuando la closure policy se satisface.
 
 ---
 

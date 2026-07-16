@@ -42,18 +42,23 @@ O Time funciona melhor sobre uma extração (`_reversa_sdd/`), mas degrada bem: 
 
 Uma pasta por bug, com **endereço imutável**: a pasta nunca se move nem é renomeada. O status vive no front matter, nunca no caminho.
 
+Os bugs são agrupados por **contexto**: a feature, módulo ou caso de uso de que o usuário está falando ("deu pau no sistema de crédito", "o carrinho tá com problema de cálculo"). A pasta do contexto não existe até alguém reportar um problema da área, mas nasce **imediatamente** quando o usuário diz onde está o problema, para já receber prints e documentos. TUDO daquela área vive dentro dela; nada nasce vazio na raiz.
+
 ```
 _reversa_bugs/
 ├── README.md                 o contrato do projeto (lifecycle, closure policy, regras)
 ├── taxonomy.yaml             vocabulário controlado de area/module/feature
-├── bugs/
-│   └── BUG-20260715-A7K3-desconto-duplicado/
-│       ├── bug.md            registro canônico (source of truth)
-│       ├── evidence/         logs, prints, cápsula de reprodução
-│       ├── debate/           se aberto: rodadas, convergência, resposta final
-│       └── fix/              diffs do change set tipado, verificação
-├── inspections/<feature>/    relatórios do pente-fino
-└── generated/                views regeneradas (nunca editadas à mão)
+└── <contexto>/               ex.: sistema-de-credito/ (criada na hora do primeiro relato)
+    ├── intake/               relatos anotados + prints recebidos ANTES de existir qualquer bug
+    ├── bugs/
+    │   └── BUG-20260715-A7K3-desconto-duplicado/
+    │       ├── bug.md        registro canônico (source of truth)
+    │       ├── DONE.md       trava de conclusão: presente, a pasta vira somente leitura para agentes
+    │       ├── evidence/     logs, prints, cápsula de reprodução
+    │       ├── debate/       se aberto: rodadas, convergência, resposta final
+    │       └── fix/          plan.html (plano visual, aprovado ANTES de mexer) + diffs do change set
+    ├── inspections/<varredura>/  relatórios do pente-fino do contexto
+    └── generated/            views do contexto, incluindo o graph.html (nunca editadas à mão)
 ```
 
 Conceitos centrais do schema:
@@ -63,6 +68,7 @@ Conceitos centrais do schema:
 - **Estados epistemológicos**: causa raiz e relações entre bugs carregam `hypothesized / supported / confirmed / rejected` com evidências. Hipótese nunca entra no grafo como fato.
 - **Correction Change Set**: uma correção é um conjunto tipado de mudanças (código, teste, configuração, migration, reparo de dados, especificação...), porque código curado não é sistema curado.
 - **Closure policy**: o que `resolved` exige depende do perfil do projeto: software local fecha com testes de regressão passando; serviço em produção só depois da entrega e de uma janela de observação sem recorrência.
+- **Anotar primeiro, saída visual sempre**: o `/reversa-debugger` começa como escrivão (relatos e prints caem em `intake/` antes de qualquer registro), e as views, incluindo o `graph.html` autocontido (nós clicáveis, estatísticas, arestas de relação), são geradas automaticamente como parte da documentação. O `/reversa-debugger-fix` produz um plano visual de correção (`fix/plan.html`, com matriz de relações com links e o change set proposto) que o usuário aprova antes de qualquer arquivo ser tocado, e grava a trava `DONE.md` quando a closure policy é satisfeita.
 
 ---
 

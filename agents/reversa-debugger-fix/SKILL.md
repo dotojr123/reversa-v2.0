@@ -23,8 +23,10 @@ Você é o corretor. Sua missão é levar um bug registrado da triagem até o fe
 ## Seleção do bug
 
 1. Com argumento (`/reversa-debugger-fix BUG-20260715-A7K3` ou `/reversa-debugger-fix BUG-007`): resolva por ID canônico ou `display_number`
-2. Sem argumento: leia `generated/catalog.jsonl` (ou varra `bugs/*/bug.md`), calcule o impact score (só arestas `supported`/`confirmed`) e **sugira** o bug de maior impacto sistêmico entre os abertos, explicando o porquê. A escolha é do usuário (menu com top 3 + "Outro").
-3. Bug `resolved` ou com `blocking` ativo: informe e pergunte como proceder.
+2. O bug vive em `_reversa_bugs/<contexto>/bugs/`: localize-o varrendo os catálogos de todos os contextos (`_reversa_bugs/*/generated/catalog.jsonl`, ou `_reversa_bugs/*/bugs/*/bug.md` na falta deles). Se o usuário falou da área em linguagem natural ("conserta o carrinho"), comece pelo contexto correspondente.
+3. Sem argumento: calcule o impact score sobre todos os contextos (só arestas `supported`/`confirmed`) e **sugira** o bug de maior impacto sistêmico entre os abertos, explicando o porquê e dizendo o contexto. A escolha é do usuário (menu com top 3 + "Outro").
+4. **Trava DONE**: se existir `DONE.md` na pasta do bug, o bug está encerrado e é SOMENTE LEITURA. Recuse-se a mexer nele e explique as duas saídas: o usuário remover a trava manualmente (reabertura consciente) ou registrar um bug NOVO com relação `regression-of` apontando para o travado. Nunca remova a trava você mesmo.
+5. Bug `resolved` sem trava, ou com `blocking` ativo: informe e pergunte como proceder.
 
 ## Modo de controle
 
@@ -81,6 +83,22 @@ Causa raiz: <resumo> (estado: <state>). Risco da mudança: <classificação> (<m
 
 Recomende o debate quando houver hipóteses concorrentes (modo `diagnosis`), estratégias concorrentes com risco alto (modo `repair`) ou divergência código vs spec (modo `spec`). O debate NUNCA roda sem aceite. Se rodar, consuma `debate/resposta-final.md` como estratégia.
 
+### 4.1 Relatório visual do plano de correção (OBRIGATÓRIO, antes de tocar qualquer arquivo)
+
+Decidida a estratégia, gere `fix/plan.html` na pasta do bug: uma página AUTOCONTIDA (CSS inline, tema escuro, mesmo estilo do `graph.html` do contexto) que mostra como a correção SERÁ, antes de ela existir:
+
+1. Cabeçalho: bug (display_number + ID), contexto, data, severidade/prioridade
+2. Resumo do defeito e da **causa raiz** (com o estado epistemológico e as evidências)
+3. **Estratégia escolhida** (direta ou a vencedora do debate, com uma frase do porquê)
+4. **Correction Change Set proposto**: tabela CHG | tipo | artefato | propósito, com os arquivos que serão tocados
+5. **Testes planejados**: reprodução e regressão, o que cada um prova
+6. **Riscos**: `change_risk` com os motivos, e o que fica de fora da correção (Agent Notes)
+7. **Mini-grafo do bug**: o bug destacado no centro com as relações dele, cada nó com LINK relativo para o `bug.md` correspondente
+8. **Matriz de relações com links**: origem | tipo | destino | estado, todas as células de bug clicáveis
+9. Se a sessão for corrigir mais de um bug encadeado: a **ordem sugerida** de correção derivada do grafo (causa estrutural primeiro)
+
+Apresente o caminho do `plan.html`, peça para o usuário abrir e **aguarde a aprovação do plano**. Só depois disso entram os gates. Se o usuário pedir mudanças, regenere o plano antes de seguir.
+
 ### 5. Gate 1: os testes
 
 1. Escreva o **teste de reprodução** (prova que o defeito relatado aparece) e o(s) **teste(s) de regressão** (protegem o comportamento que não pode voltar a quebrar). São conceitos distintos; podem coincidir num arquivo, nunca na intenção.
@@ -112,7 +130,8 @@ Diff do código e diff/adendo da spec ficam registrados **JUNTOS** na Resolution
    - `package`: acrescente `delivery` (merge, versão publicada) e `versions`/`backports`; bug segue `active`/`delivering` até publicar
    - `production-service`: acrescente `delivery` e `post_fix_observation`; bug fica `active`/`observing` até a janela confirmar não recorrência (informe o usuário como encerrar a observação numa próxima chamada)
 3. Só marque `status: resolved` + `closure.satisfied: true` quando a política estiver satisfeita. `resolution_kind: fixed` exige causa `confirmed` + regressão + veredito.
-4. Atualize as views (`generated/` e `_reversa_sdd/traceability/bugs.md`) pelo protocolo do `/reversa-debugger-graph`
+4. **Grave a trava**: satisfeita a closure policy, crie `DONE.md` na pasta do bug com data, `resolution_kind` e a frase "Este bug está encerrado. Nenhum agente deve modificar esta pasta. Reabertura: remova este arquivo conscientemente ou registre um bug novo com regression-of." A partir daí a pasta inteira é somente leitura para todos os comandos.
+5. Atualize as views do contexto do bug (`_reversa_bugs/<contexto>/generated/`) e o espelho `_reversa_sdd/traceability/bugs.md` pelo protocolo do `/reversa-debugger-graph`
 
 ## Relatório final ao usuário
 

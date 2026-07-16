@@ -107,9 +107,16 @@ Blocos opcionais (só quando o contexto existe): `mitigation` (kind, applied_at,
     tabela do change set, diffs de código e spec JUNTOS, testes de reprodução e regressão)
 11. `## Agent Notes` (restrições para quem for corrigir; propostas de taxonomia)
 
+## Trava de conclusão (DONE.md)
+
+Quando a closure policy é satisfeita, o fix grava `DONE.md` na pasta do bug (data, `resolution_kind`
+e o aviso de somente leitura). Pasta com `DONE.md` é INTOCÁVEL por qualquer agente: reabrir exige o
+usuário remover a trava, ou um bug novo com `regression-of`.
+
 ## Invariantes (o /reversa-debugger-graph valida e PARA com erro, nunca conserta em silêncio)
 
 - `status: resolved` exige `resolution_kind` preenchido e `closure.satisfied: true`
+- `DONE.md` sem `status: resolved`, ou `resolved` + `closure.satisfied` sem `DONE.md`, é inconsistência
 - `resolution_kind: fixed` exige `root_cause.state: confirmed`, `regression_tests` não vazio e `spec_verdict` preenchido
 - ID duplicado, referência a ID inexistente, autorrelação e ciclo de `duplicate-of` são erros
 - Relação `proposed` nunca entra em priorização automática nem no impact score

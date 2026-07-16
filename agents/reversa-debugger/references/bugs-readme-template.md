@@ -1,7 +1,7 @@
 # Registro de Bugs (Reversa Bugs)
 
 > Gerado pelo Reversa em {{DATA}}. Este arquivo é o contrato do registro de bugs deste projeto.
-> Source of truth: cada `bugs/<ID>/bug.md`. Tudo em `generated/` é projeção regenerável.
+> Source of truth: cada `<contexto>/bugs/<ID>/bug.md`. Tudo em `generated/` é projeção regenerável.
 
 ## Configuração do projeto
 
@@ -20,15 +20,18 @@ control_mode: gated                  # supervised | gated | autonomous
 
 ## Estrutura
 
+Os bugs são agrupados por **contexto** (feature, módulo ou caso de uso, na linguagem de quem reporta). Cada contexto é uma pasta agregadora com TUDO daquela área: bugs, inspeções e views. A pasta nasce sob demanda, quando o primeiro problema da área é reportado; nada é criado vazio.
+
 ```text
 _reversa_bugs/
 ├── README.md                    este contrato
 ├── taxonomy.yaml                vocabulário controlado de area/module/feature
-├── bugs/BUG-<data>-<sufixo>-<slug>/   pasta única do bug (endereço IMUTÁVEL, nunca se move)
-│   ├── bug.md                   registro canônico
-│   ├── evidence/  ├── debate/  └── fix/
-├── inspections/<feature>/       relatórios do pente-fino
-└── generated/                   views regeneradas pelo /reversa-debugger-graph (não editar à mão)
+└── <contexto>/                  ex.: sistema-de-credito/, carrinho-de-compras/
+    ├── bugs/BUG-<data>-<sufixo>-<slug>/   pasta única do bug (endereço IMUTÁVEL, nunca se move)
+    │   ├── bug.md               registro canônico
+    │   ├── evidence/  ├── debate/  └── fix/
+    ├── inspections/<varredura>/ relatórios do pente-fino do contexto
+    └── generated/               views do contexto, regeneradas pelo /reversa-debugger-graph
 ```
 
 ## Ciclo de vida
@@ -36,6 +39,11 @@ _reversa_bugs/
 `status`: `open` → `active` → `resolved`. `phase` detalha a etapa dentro de `active`
 (mitigating, reproducing, diagnosing, testing, patching, delivering, observing, awaiting-human).
 Bloqueio é condição (`blocking:`), nunca status. Todo fechamento tem `resolution_kind`.
+
+**Trava de conclusão:** ao satisfazer a closure policy, o bug recebe `DONE.md` na pasta e vira
+SOMENTE LEITURA para todos os agentes. Reabertura: remover a trava conscientemente, ou registrar um
+bug novo com `regression-of`. A lista dos travados aparece no `graph.html` do contexto (view
+derivada, sem edição manual).
 
 ## Regra de rastreabilidade
 

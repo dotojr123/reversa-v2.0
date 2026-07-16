@@ -42,18 +42,23 @@ The Team works best on top of an extraction (`_reversa_sdd/`), but degrades grac
 
 One folder per bug, with an **immutable address**: the folder never moves or gets renamed. Status lives in the front matter, never in the path.
 
+Bugs are grouped by **context**: the feature, module or use case the user is talking about ("the credit system broke", "the cart is miscalculating"). The context folder does not exist until someone reports a problem in that area, but it is created **immediately** when the user says where the problem is, so it can receive screenshots and documents right away. TODO of that area lives inside it; nothing is ever created empty at the root.
+
 ```
 _reversa_bugs/
 ├── README.md                 the project contract (lifecycle, closure policy, rules)
 ├── taxonomy.yaml             controlled vocabulary for area/module/feature
-├── bugs/
-│   └── BUG-20260715-A7K3-duplicated-discount/
-│       ├── bug.md            canonical record (source of truth)
-│       ├── evidence/         logs, screenshots, reproduction capsule
-│       ├── debate/           if opened: rounds, convergence, final answer
-│       └── fix/              typed change set diffs, verification
-├── inspections/<feature>/    depth-inspection reports
-└── generated/                regenerated views (never hand-edited)
+└── <context>/                e.g. credit-system/ (created the moment the first problem is reported)
+    ├── intake/               annotated reports + screenshots received BEFORE any bug record exists
+    ├── bugs/
+    │   └── BUG-20260715-A7K3-duplicated-discount/
+    │       ├── bug.md        canonical record (source of truth)
+    │       ├── DONE.md       closure lock: once present, the folder is read-only for every agent
+    │       ├── evidence/     logs, screenshots, reproduction capsule
+    │       ├── debate/       if opened: rounds, convergence, final answer
+    │       └── fix/          plan.html (visual fix plan, approved BEFORE any change) + change set diffs
+    ├── inspections/<sweep>/  depth-inspection reports for this context
+    └── generated/            per-context views incl. graph.html (never hand-edited)
 ```
 
 Key schema concepts:
@@ -63,6 +68,7 @@ Key schema concepts:
 - **Epistemic states**: root cause and bug-to-bug relations carry `hypothesized / supported / confirmed / rejected` with evidence. A hypothesis never enters the graph as a fact.
 - **Correction Change Set**: a fix is a typed set of changes (code, test, configuration, migration, data repair, specification...), because healed code is not a healed system.
 - **Closure policy**: what `resolved` requires depends on the project profile: local software closes on passing regression tests; a production service only after delivery and an observation window with no recurrence.
+- **Annotation first, visual outputs always**: `/reversa-debugger` starts as a scribe (reports and screenshots land in `intake/` before any record), and the views, including the self-contained `graph.html` (clickable nodes, stats, relation edges), are generated automatically as part of documenting. `/reversa-debugger-fix` produces a visual fix plan (`fix/plan.html`, with linked relation matrix and the proposed change set) that the user approves before any file is touched, and writes the `DONE.md` lock when the closure policy is satisfied.
 
 ---
 

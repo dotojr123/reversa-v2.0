@@ -245,7 +245,7 @@ The team brings 5 shared skills (`reversa-arquitetura-3d`, `reversa-selo-generat
 
 ### Bug Agents
 
-A repository-native causal defect memory: every bug is a self-contained folder under `_reversa_bugs/bugs/` with a YAML front matter record traceable to the specs (`SPEC ↔ CODE ↔ TEST ↔ BUG`), evidence, optional multi-agent debate state and the correction change set. Registering and fixing are strictly separate acts.
+A repository-native causal defect memory, organized by **context** (the feature/module/use case the user is talking about): each context folder under `_reversa_bugs/<context>/` aggregates everything of that area (annotated reports in `intake/`, self-contained bug folders, inspections and generated views incl. a clickable `graph.html`). Every bug carries a YAML front matter record traceable to the specs (`SPEC ↔ CODE ↔ TEST ↔ BUG`), a visual fix plan approved before any change, and a `DONE.md` lock once closed. Registering and fixing are strictly separate acts.
 
 | Agent | Role |
 |-------|------|
