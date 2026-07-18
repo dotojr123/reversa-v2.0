@@ -67,7 +67,7 @@ function groupByCanonicalId(objects) {
 }
 
 describe('Scanner — fixture Sprint 6a', () => {
-    test('extrai exatamente as 13 evidências brutas esperadas (contagem)', () => {
+    test(`extrai exatamente as ${gabarito.counts.total_raw_evidences} evidências brutas esperadas (contagem)`, () => {
         assert.equal(
             rawObjects.length,
             gabarito.counts.total_raw_evidences,
@@ -112,14 +112,14 @@ describe('Scanner — fixture Sprint 6a', () => {
         assert.equal(occurrences.length, 2, 'Esperado 2 evidências para o método que diverge entre OrderService.js e OrderServiceV2.js');
 
         const [a, b] = occurrences;
-        const contentA = JSON.stringify(a.content, Object.keys(a.content).sort());
-        const contentB = JSON.stringify(b.content, Object.keys(b.content).sort());
 
-        assert.notEqual(
-            contentA,
-            contentB,
-            'As duas versões de createOrder precisam divergir estruturalmente — se alguém "consertou" o fixture ' +
-                'deixando os dois arquivos idênticos, o teste de ConflictProcessor no ingest_e2e.test.js (Sprint 6b) vai quebrar silenciosamente.'
+        // A divergência agora emerge naturalmente pelo campo numericLiterals
+        // (0.10 vs 0.15), coletado de forma genérica pelo Scanner sem valor mágico.
+        assert.notDeepStrictEqual(
+            a.content,
+            b.content,
+            'As duas versões de createOrder precisam divergir estruturalmente (ex: numericLiterals diferentes) — ' +
+                'se alguém "consertou" o fixture deixando os dois arquivos idênticos, o teste de ConflictProcessor vai quebrar silenciosamente.'
         );
     });
 

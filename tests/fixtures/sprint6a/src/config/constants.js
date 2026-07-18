@@ -1,2 +1,2 @@
-const TAX_RATE = 0.1;
-const CURRENCY = 'USD';
+export const TAX_RATE = 0.10;
+export const CURRENCY = 'USD';

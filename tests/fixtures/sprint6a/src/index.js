@@ -1,1 +1,3 @@
-function bootstrap() {}
+export function bootstrap() {
+    return 'started';
+}

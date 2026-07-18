@@ -1,6 +1,6 @@
 {
   "counts": {
-    "total_raw_evidences": 12,
+    "total_raw_evidences": 15,
     "duplicates_for_dedup_merge": 2
   },
   "raw_knowledge_objects": [
@@ -25,7 +25,9 @@
       "type": "CLASS",
       "content": {
         "name": "UserService",
-        "methods": [],
+        "methods": [
+          "createUser"
+        ],
         "dependsOn": [
           "Class.OrderService"
         ]
@@ -40,12 +42,34 @@
       ]
     },
     {
+      "canonicalId": "Class.UserService.createUser",
+      "type": "METHOD",
+      "content": {
+        "name": "createUser",
+        "params": [
+          "name"
+        ],
+        "dependsOn": [
+          "Class.OrderService"
+        ]
+      },
+      "evidences": [
+        {
+          "type": "SOURCE_CODE",
+          "path": "src/services/UserService.js",
+          "line": 6,
+          "confidence": 90
+        }
+      ]
+    },
+    {
       "canonicalId": "Class.OrderService",
       "type": "CLASS",
       "content": {
         "name": "OrderService",
         "methods": [
-          "createOrder"
+          "createOrder",
+          "cancelOrder"
         ],
         "dependsOn": [
           "Class.UserService"
@@ -65,16 +89,39 @@
       "type": "METHOD",
       "content": {
         "name": "createOrder",
-        "params": [],
-        "dependsOn": [
-          "Const.TAX_RATE"
+        "params": [
+          "amount"
+        ],
+        "numericLiterals": [
+          0.1
         ]
       },
       "evidences": [
         {
           "type": "SOURCE_CODE",
           "path": "src/services/OrderService.js",
-          "line": 1,
+          "line": 6,
+          "confidence": 90
+        }
+      ]
+    },
+    {
+      "canonicalId": "Class.OrderService.cancelOrder",
+      "type": "METHOD",
+      "content": {
+        "name": "cancelOrder",
+        "params": [
+          "orderId"
+        ],
+        "dependsOn": [
+          "Class.UserService"
+        ]
+      },
+      "evidences": [
+        {
+          "type": "SOURCE_CODE",
+          "path": "src/services/OrderService.js",
+          "line": 10,
           "confidence": 90
         }
       ]
@@ -84,7 +131,9 @@
       "type": "FUNCTION",
       "content": {
         "name": "validateEmail",
-        "params": []
+        "params": [
+          "email"
+        ]
       },
       "evidences": [
         {
@@ -100,13 +149,15 @@
       "type": "FUNCTION",
       "content": {
         "name": "validateAmount",
-        "params": []
+        "params": [
+          "amount"
+        ]
       },
       "evidences": [
         {
           "type": "SOURCE_CODE",
           "path": "src/utils/validators.js",
-          "line": 2,
+          "line": 5,
           "confidence": 90
         }
       ]
@@ -116,7 +167,9 @@
       "type": "FUNCTION",
       "content": {
         "name": "formatCurrency",
-        "params": []
+        "params": [
+          "amount"
+        ]
       },
       "evidences": [
         {
@@ -164,7 +217,9 @@
       "type": "FUNCTION",
       "content": {
         "name": "validateEmail",
-        "params": []
+        "params": [
+          "email"
+        ]
       },
       "evidences": [
         {
@@ -181,7 +236,8 @@
       "content": {
         "name": "OrderService",
         "methods": [
-          "createOrder"
+          "createOrder",
+          "cancelOrder"
         ],
         "dependsOn": [
           "Class.UserService"
@@ -201,15 +257,39 @@
       "type": "METHOD",
       "content": {
         "name": "createOrder",
-        "params": [],
-        "taxRate": 0.15,
-        "note": "hardcoded, diverge de Const.TAX_RATE"
+        "params": [
+          "amount"
+        ],
+        "numericLiterals": [
+          0.15
+        ]
       },
       "evidences": [
         {
           "type": "SOURCE_CODE",
           "path": "src/legacy/OrderServiceV2.js",
-          "line": 1,
+          "line": 6,
+          "confidence": 90
+        }
+      ]
+    },
+    {
+      "canonicalId": "Class.OrderService.cancelOrder",
+      "type": "METHOD",
+      "content": {
+        "name": "cancelOrder",
+        "params": [
+          "orderId"
+        ],
+        "dependsOn": [
+          "Class.UserService"
+        ]
+      },
+      "evidences": [
+        {
+          "type": "SOURCE_CODE",
+          "path": "src/legacy/OrderServiceV2.js",
+          "line": 10,
           "confidence": 90
         }
       ]
