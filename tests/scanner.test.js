@@ -67,7 +67,7 @@ function groupByCanonicalId(objects) {
 }
 
 describe('Scanner — fixture Sprint 6a', () => {
-    test(`extrai exatamente as ${gabarito.counts.total_raw_evidences} evidências brutas esperadas (contagem)`, () => {
+    test(`extrai exatamente as ${15} evidências brutas esperadas (contagem)`, () => {
         assert.equal(
             rawObjects.length,
             gabarito.counts.total_raw_evidences,
@@ -92,12 +92,11 @@ describe('Scanner — fixture Sprint 6a', () => {
         );
     });
 
-    test('identifica as 2 duplicatas propositais para o DedupProcessor', () => {
+    test('identifica as duplicatas propositais para o DedupProcessor', () => {
         const byCanonical = groupByCanonicalId(rawObjects);
 
-        for (const canonicalId of gabarito.counts.duplicates_for_dedup_merge === 2
-            ? ['Function.validateEmail', 'Class.OrderService', 'Class.OrderService.createOrder']
-            : []) {
+        // Todos os canonicalIds que existem tanto no src/ quanto no legacy/
+        for (const canonicalId of ['Function.validateEmail', 'Class.OrderService', 'Class.OrderService.createOrder', 'Class.OrderService.cancelOrder']) {
             const occurrences = byCanonical.get(canonicalId) ?? [];
             assert.equal(
                 occurrences.length,
@@ -112,14 +111,14 @@ describe('Scanner — fixture Sprint 6a', () => {
         assert.equal(occurrences.length, 2, 'Esperado 2 evidências para o método que diverge entre OrderService.js e OrderServiceV2.js');
 
         const [a, b] = occurrences;
+        const contentA = JSON.stringify(a.content, Object.keys(a.content).sort());
+        const contentB = JSON.stringify(b.content, Object.keys(b.content).sort());
 
-        // A divergência agora emerge naturalmente pelo campo numericLiterals
-        // (0.10 vs 0.15), coletado de forma genérica pelo Scanner sem valor mágico.
-        assert.notDeepStrictEqual(
-            a.content,
-            b.content,
-            'As duas versões de createOrder precisam divergir estruturalmente (ex: numericLiterals diferentes) — ' +
-                'se alguém "consertou" o fixture deixando os dois arquivos idênticos, o teste de ConflictProcessor vai quebrar silenciosamente.'
+        assert.notEqual(
+            contentA,
+            contentB,
+            'As duas versões de createOrder precisam divergir estruturalmente — se alguém "consertou" o fixture ' +
+                'deixando os dois arquivos idênticos, o teste de ConflictProcessor no ingest_e2e.test.js (Sprint 6b) vai quebrar silenciosamente.'
         );
     });
 
@@ -167,5 +166,32 @@ describe('Scanner — fixture Sprint 6a', () => {
                     `o Scanner está gerando falso-positivo de duplicata`
             );
         }
+    });
+
+    test('formatCurrency NÃO gera falso-positivo de dependência (amount.toFixed() não é DI)', () => {
+        const formatCurrency = rawObjects.find((ko) => ko.canonicalId === 'Function.formatCurrency');
+        assert.ok(formatCurrency, 'Function.formatCurrency não foi extraída');
+        assert.equal(
+            formatCurrency.content.dependsOn,
+            undefined,
+            'formatCurrency chama amount.toFixed(2) — isso é um built-in de Number, não uma classe de domínio. ' +
+                'Se dependsOn aparecer aqui, a heurística de inferência está disparando em falso.'
+        );
+    });
+
+    test('divergência entre createOrder do src/ e do legacy/ é via numericLiterals (não hardcode)', () => {
+        const createOrders = rawObjects.filter((ko) => ko.canonicalId === 'Class.OrderService.createOrder');
+        assert.equal(createOrders.length, 2);
+
+        const literalsA = createOrders[0].content.numericLiterals ?? [];
+        const literalsB = createOrders[1].content.numericLiterals ?? [];
+
+        assert.ok(literalsA.length > 0, 'createOrder do src/ deveria ter numericLiterals');
+        assert.ok(literalsB.length > 0, 'createOrder do legacy/ deveria ter numericLiterals');
+        assert.notDeepStrictEqual(
+            literalsA,
+            literalsB,
+            'Os numericLiterals das duas versões de createOrder deveriam divergir (0.10 vs 0.15)'
+        );
     });
 });

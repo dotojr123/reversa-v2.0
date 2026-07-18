@@ -37,7 +37,7 @@
     "url": "git+https://github.com/dotojr123/reversa-v2.0.git"
   },
   "scripts": {
-    "test": "node --test tests/*.test.js"
+    "test": "node --test"
   },
   "homepage": "https://github.com/dotojr123/reversa-v2.0",
   "bugs": {
