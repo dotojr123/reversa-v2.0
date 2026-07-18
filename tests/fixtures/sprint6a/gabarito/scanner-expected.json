@@ -1,0 +1,218 @@
+{
+  "counts": {
+    "total_raw_evidences": 12,
+    "duplicates_for_dedup_merge": 2
+  },
+  "raw_knowledge_objects": [
+    {
+      "canonicalId": "Function.bootstrap",
+      "type": "FUNCTION",
+      "content": {
+        "name": "bootstrap",
+        "params": []
+      },
+      "evidences": [
+        {
+          "type": "SOURCE_CODE",
+          "path": "src/index.js",
+          "line": 1,
+          "confidence": 90
+        }
+      ]
+    },
+    {
+      "canonicalId": "Class.UserService",
+      "type": "CLASS",
+      "content": {
+        "name": "UserService",
+        "methods": [],
+        "dependsOn": [
+          "Class.OrderService"
+        ]
+      },
+      "evidences": [
+        {
+          "type": "SOURCE_CODE",
+          "path": "src/services/UserService.js",
+          "line": 1,
+          "confidence": 90
+        }
+      ]
+    },
+    {
+      "canonicalId": "Class.OrderService",
+      "type": "CLASS",
+      "content": {
+        "name": "OrderService",
+        "methods": [
+          "createOrder"
+        ],
+        "dependsOn": [
+          "Class.UserService"
+        ]
+      },
+      "evidences": [
+        {
+          "type": "SOURCE_CODE",
+          "path": "src/services/OrderService.js",
+          "line": 1,
+          "confidence": 90
+        }
+      ]
+    },
+    {
+      "canonicalId": "Class.OrderService.createOrder",
+      "type": "METHOD",
+      "content": {
+        "name": "createOrder",
+        "params": [],
+        "dependsOn": [
+          "Const.TAX_RATE"
+        ]
+      },
+      "evidences": [
+        {
+          "type": "SOURCE_CODE",
+          "path": "src/services/OrderService.js",
+          "line": 1,
+          "confidence": 90
+        }
+      ]
+    },
+    {
+      "canonicalId": "Function.validateEmail",
+      "type": "FUNCTION",
+      "content": {
+        "name": "validateEmail",
+        "params": []
+      },
+      "evidences": [
+        {
+          "type": "SOURCE_CODE",
+          "path": "src/utils/validators.js",
+          "line": 1,
+          "confidence": 90
+        }
+      ]
+    },
+    {
+      "canonicalId": "Function.validateAmount",
+      "type": "FUNCTION",
+      "content": {
+        "name": "validateAmount",
+        "params": []
+      },
+      "evidences": [
+        {
+          "type": "SOURCE_CODE",
+          "path": "src/utils/validators.js",
+          "line": 2,
+          "confidence": 90
+        }
+      ]
+    },
+    {
+      "canonicalId": "Function.formatCurrency",
+      "type": "FUNCTION",
+      "content": {
+        "name": "formatCurrency",
+        "params": []
+      },
+      "evidences": [
+        {
+          "type": "SOURCE_CODE",
+          "path": "src/utils/formatters.js",
+          "line": 1,
+          "confidence": 90
+        }
+      ]
+    },
+    {
+      "canonicalId": "Const.TAX_RATE",
+      "type": "CONST",
+      "content": {
+        "name": "TAX_RATE",
+        "value": 0.1
+      },
+      "evidences": [
+        {
+          "type": "SOURCE_CODE",
+          "path": "src/config/constants.js",
+          "line": 1,
+          "confidence": 90
+        }
+      ]
+    },
+    {
+      "canonicalId": "Const.CURRENCY",
+      "type": "CONST",
+      "content": {
+        "name": "CURRENCY",
+        "value": "USD"
+      },
+      "evidences": [
+        {
+          "type": "SOURCE_CODE",
+          "path": "src/config/constants.js",
+          "line": 2,
+          "confidence": 90
+        }
+      ]
+    },
+    {
+      "canonicalId": "Function.validateEmail",
+      "type": "FUNCTION",
+      "content": {
+        "name": "validateEmail",
+        "params": []
+      },
+      "evidences": [
+        {
+          "type": "SOURCE_CODE",
+          "path": "src/legacy/validatorsCopy.js",
+          "line": 1,
+          "confidence": 90
+        }
+      ]
+    },
+    {
+      "canonicalId": "Class.OrderService",
+      "type": "CLASS",
+      "content": {
+        "name": "OrderService",
+        "methods": [
+          "createOrder"
+        ],
+        "dependsOn": [
+          "Class.UserService"
+        ]
+      },
+      "evidences": [
+        {
+          "type": "SOURCE_CODE",
+          "path": "src/legacy/OrderServiceV2.js",
+          "line": 1,
+          "confidence": 90
+        }
+      ]
+    },
+    {
+      "canonicalId": "Class.OrderService.createOrder",
+      "type": "METHOD",
+      "content": {
+        "name": "createOrder",
+        "params": [],
+        "taxRate": 0.15,
+        "note": "hardcoded, diverge de Const.TAX_RATE"
+      },
+      "evidences": [
+        {
+          "type": "SOURCE_CODE",
+          "path": "src/legacy/OrderServiceV2.js",
+          "line": 1,
+          "confidence": 90
+        }
+      ]
+    }
+  ]
+}

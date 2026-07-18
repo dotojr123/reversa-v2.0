@@ -116,5 +116,13 @@ Reversa v2.0 doesn't just read code; it understands the history, the reasons, an
 
 ---
 
+## 🏛️ Provenance & Acknowledgements
+
+This project, **Reversa KIP (Knowledge Intelligence Platform)**, is an independent derivative work built upon the foundation of [sandeco/reversa](https://github.com/sandeco/reversa). We have extended the original vision from a static documentation generator into a living, executable Knowledge Operating System (KOS) featuring hybrid graph memory, real-time impact analysis, and full MCP support. 
+
+Original Reversa framework © Sandeco. Modifications, KOS architecture, and Knowledge Studio © IAgencia.
+
+---
+
 ## License
 MIT — see [LICENSE](LICENSE) for details.

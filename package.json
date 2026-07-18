@@ -1,7 +1,7 @@
 {
-  "name": "reversa",
-  "version": "1.2.55",
-  "description": "Transform legacy systems into executable specifications for AI coding agents",
+  "name": "reversa-kos",
+  "version": "0.1.0",
+  "description": "Knowledge Operating System: Transform legacy systems into executable specifications for AI coding agents",
   "bin": {
     "reversa": "bin/reversa.js"
   },
@@ -15,7 +15,9 @@
     "codex",
     "gemini",
     "cursor",
-    "agents"
+    "agents",
+    "knowledge-graph",
+    "kos"
   ],
   "files": [
     "agents/",
@@ -25,15 +27,21 @@
     "README.md",
     "LICENSE"
   ],
-  "author": "sandeco",
+  "author": "IAgencia",
+  "contributors": [
+    "sandeco <sandecom@gmail.com>"
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sandeco/reversa.git"
+    "url": "git+https://github.com/dotojr123/reversa-v2.0.git"
   },
-  "homepage": "https://github.com/sandeco/reversa",
+  "scripts": {
+    "test": "node --test"
+  },
+  "homepage": "https://github.com/dotojr123/reversa-v2.0",
   "bugs": {
-    "url": "https://github.com/sandeco/reversa/issues"
+    "url": "https://github.com/dotojr123/reversa-v2.0/issues"
   },
   "engines": {
     "node": ">=18.20.2"

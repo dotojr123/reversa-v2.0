@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { Scanner } from '../lib/core/scanner/Scanner.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const FIXTURE_ROOT = 'C:\\Users\\Doto\\Downloads\\reversa-fixture-sprint6a\\fixture';
+const FIXTURE_ROOT = path.join(__dirname, 'fixtures', 'sprint6a');
 const GABARITO_PATH = path.join(FIXTURE_ROOT, 'gabarito', 'scanner-expected.json');
 
 let gabarito;
