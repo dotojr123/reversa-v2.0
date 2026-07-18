@@ -8,7 +8,8 @@ describe('Pipeline Ingest (E2E) — Sprint 6b', () => {
     let dbPath = '.reversa/test_knowledge.db';
 
     test('ingestCommand runs on fixture without errors and persists commit', async () => {
-        const fixturePath = 'C:\\Users\\Doto\\Downloads\\reversa-fixture-sprint6a\\fixture';
+        // FIXME: mesma fixture ausente do scanner.test.js — ver comentário lá.
+        const fixturePath = path.join(process.cwd(), 'tests', 'fixtures', 'sprint6a');
         
         // Mock stdout to avoid noise during test
         const originalLog = console.log;

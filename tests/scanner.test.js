@@ -6,6 +6,11 @@ import { fileURLToPath } from 'node:url';
 import { Scanner } from '../lib/core/scanner/Scanner.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
+// FIXME: os 8 arquivos de src/ e o gabarito/scanner-expected.json referenciados
+// abaixo nunca foram commitados neste repo (existiam apenas em
+// C:\Users\Doto\Downloads\reversa-fixture-sprint6a\fixture na máquina original).
+// Path trocado pra relativo, mas o teste continuará FALHANDO até a fixture
+// ser recriada em tests/fixtures/sprint6a/ e commitada.
 const FIXTURE_ROOT = path.join(__dirname, 'fixtures', 'sprint6a');
 const GABARITO_PATH = path.join(FIXTURE_ROOT, 'gabarito', 'scanner-expected.json');
 
@@ -67,7 +72,7 @@ function groupByCanonicalId(objects) {
 }
 
 describe('Scanner — fixture Sprint 6a', () => {
-    test('extrai exatamente as evidências brutas esperadas (contagem)', () => {
+    test('extrai exatamente o número de evidências brutas esperadas no gabarito (contagem)', () => {
         assert.equal(
             rawObjects.length,
             gabarito.counts.total_raw_evidences,

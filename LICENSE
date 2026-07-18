@@ -1,7 +1,8 @@
 MIT License
 
-Copyright (c) 2026 Sandeco
-Copyright (c) 2026 IAgencia (Modifications and V2.0 Architecture)
+Copyright (c) 2026 Sandeco (original Reversa installer, agents and skill framework)
+Copyright (c) 2026 Doto / IAgência AI (Reversa KOS: knowledge engine,
+plugin system, Studio UI, and derivative works added on top of the original project)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
