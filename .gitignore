@@ -7,3 +7,4 @@ site/
 .npm-cache/
 .tmp-mkdocs-site/
 specs/
+.reversa/

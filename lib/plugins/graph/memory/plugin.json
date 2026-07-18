@@ -1,0 +1,9 @@
+{
+  "name": "memory-graph-provider",
+  "version": "1.0",
+  "type": "graph",
+  "capabilities": [
+    "GraphProvider"
+  ],
+  "entrypoint": "MemoryGraphProvider.js"
+}

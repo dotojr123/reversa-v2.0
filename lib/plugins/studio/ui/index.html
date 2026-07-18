@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reversa Knowledge Studio</title>
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Cytoscape.js (CDN) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.28.1/cytoscape.min.js"></script>
+    <!-- Dagre Layout para Cytoscape -->
+    <script src="https://cdn.jsdelivr.net/npm/dagre@0.8.5/dist/dagre.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/cytoscape-dagre@2.5.0/cytoscape-dagre.min.js"></script>
+    
+    <style>
+        #cy {
+            width: 100%;
+            height: 100%;
+            background-color: #0f172a; /* Tailwind slate-900 */
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-200 h-screen flex flex-col font-sans overflow-hidden">
+    
+    <!-- Header -->
+    <header class="bg-slate-800 border-b border-slate-700 px-6 py-4 flex items-center justify-between">
+        <div class="flex items-center gap-3">
+            <div class="w-8 h-8 rounded bg-blue-600 flex items-center justify-center font-bold text-white shadow-lg shadow-blue-500/20">R</div>
+            <h1 class="text-xl font-semibold tracking-tight text-white">Reversa <span class="text-blue-400">Knowledge Studio</span></h1>
+        </div>
+        <nav class="flex gap-1 bg-slate-900/50 p-1 rounded-lg border border-slate-700/50">
+            <button class="px-4 py-1.5 text-sm font-medium rounded-md bg-slate-700 text-white shadow">Graph Workspace</button>
+            <button class="px-4 py-1.5 text-sm font-medium rounded-md text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">Search & Prompt</button>
+            <button class="px-4 py-1.5 text-sm font-medium rounded-md text-slate-400 hover:text-white hover:bg-slate-800 transition-colors">Runtime</button>
+        </nav>
+    </header>
+
+    <!-- Main Workspace Area -->
+    <main class="flex-1 flex overflow-hidden">
+        
+        <!-- Left Panel: Graph Canvas -->
+        <div class="flex-1 relative border-r border-slate-700 flex flex-col">
+            <!-- Toolbar Overlay -->
+            <div class="absolute top-4 left-4 z-10 flex gap-2">
+                <div class="bg-slate-800/90 backdrop-blur border border-slate-700 rounded-lg p-1.5 flex gap-1 shadow-xl">
+                    <button id="btn-layout-cose" class="px-3 py-1 text-xs font-medium bg-slate-700 text-white rounded cursor-pointer hover:bg-slate-600">CoSE</button>
+                    <button id="btn-layout-dagre" class="px-3 py-1 text-xs font-medium text-slate-400 hover:text-white rounded cursor-pointer hover:bg-slate-700">Dagre</button>
+                </div>
+                <div class="bg-slate-800/90 backdrop-blur border border-slate-700 rounded-lg p-1.5 flex gap-1 shadow-xl">
+                    <button id="btn-filter-hard" class="px-3 py-1 text-xs font-medium bg-slate-700 text-white rounded cursor-pointer hover:bg-slate-600">Hard Edges</button>
+                    <button id="btn-filter-soft" class="px-3 py-1 text-xs font-medium bg-slate-700 text-white rounded cursor-pointer hover:bg-slate-600">Soft Edges</button>
+                </div>
+            </div>
+
+            <!-- The Graph -->
+            <div id="cy"></div>
+        </div>
+
+        <!-- Right Panel: Impact Investigator Sidebar -->
+        <aside class="w-96 bg-slate-800 flex flex-col shadow-2xl z-20">
+            <div class="p-5 border-b border-slate-700 bg-slate-800/50">
+                <h2 class="text-lg font-medium text-white mb-1 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                    Impact Investigator
+                </h2>
+                <p class="text-xs text-slate-400 leading-relaxed">Simule a onda de choque de uma alteração no código usando o motor semântico KOS-018.</p>
+            </div>
+            
+            <div class="p-5 flex-1 overflow-y-auto">
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1.5 uppercase tracking-wider">Target Node (Canonical ID)</label>
+                        <input type="text" id="impact-target" placeholder="ex: module::auth::login" class="w-full bg-slate-900 border border-slate-700 rounded-md px-3 py-2 text-sm text-white focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 placeholder-slate-600">
+                    </div>
+                    
+                    <button id="btn-analyze-impact" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-2 px-4 rounded-md shadow-lg shadow-blue-900/50 transition-colors flex justify-center items-center gap-2">
+                        <span>Analisar Impacto</span>
+                    </button>
+                </div>
+
+                <div id="impact-results" class="mt-6 hidden">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-sm font-medium text-white">Impact Report</h3>
+                        <span id="impact-score" class="px-2 py-0.5 rounded text-xs font-bold bg-slate-900 border border-slate-700 text-blue-400">0.0</span>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div class="bg-slate-900/50 border border-red-900/30 rounded-md p-3">
+                            <h4 class="text-xs font-semibold text-red-400 uppercase tracking-wider mb-2 flex items-center gap-1">
+                                <div class="w-2 h-2 rounded-full bg-red-500"></div> Blast Radius (Hard)
+                            </h4>
+                            <ul id="list-hard-impacts" class="space-y-1"></ul>
+                        </div>
+
+                        <div class="bg-slate-900/50 border border-orange-900/30 rounded-md p-3">
+                            <h4 class="text-xs font-semibold text-orange-400 uppercase tracking-wider mb-2 flex items-center gap-1">
+                                <div class="w-2 h-2 rounded-full bg-orange-500"></div> Probabilistic Risks (Soft)
+                            </h4>
+                            <ul id="list-soft-risks" class="space-y-1"></ul>
+                        </div>
+                        
+                        <div class="bg-slate-900 rounded-md p-3 text-xs text-slate-300 font-mono" id="impact-explanation">
+                        </div>
+                    </div>
+                    
+                    <button id="btn-clear-impact" class="mt-4 w-full bg-slate-700 hover:bg-slate-600 text-white text-sm font-medium py-1.5 px-4 rounded-md transition-colors">
+                        Limpar Visualização
+                    </button>
+                </div>
+            </div>
+        </aside>
+    </main>
+
+    <!-- ES Modules -->
+    <script type="module" src="/app.js"></script>
+</body>
+</html>

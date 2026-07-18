@@ -1,0 +1,9 @@
+{
+  "name": "markdown-exporter",
+  "version": "1.0",
+  "type": "export",
+  "capabilities": [
+    "ExportProvider"
+  ],
+  "entrypoint": "MarkdownExporter.js"
+}

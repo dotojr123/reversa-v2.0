@@ -1,0 +1,9 @@
+{
+  "name": "markdown-projection",
+  "version": "1.0",
+  "type": "projection",
+  "capabilities": [
+    "Projection"
+  ],
+  "entrypoint": "MarkdownProjection.js"
+}

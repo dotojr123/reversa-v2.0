@@ -19,6 +19,10 @@ const commands = {
   'add-agent':        () => import('../lib/commands/add-agent.js'),
   'add-engine':       () => import('../lib/commands/add-engine.js'),
   'export-diagrams':  () => import('../lib/commands/export-diagrams.js'),
+  watch:              () => import('../lib/commands/watch.js'),
+  ingest:             () => import('../lib/commands/ingest.js'),
+  mcp:                () => import('../lib/commands/mcp.js'),
+  studio:             () => import('../lib/commands/studio.js'),
 };
 
 if (!command || command === '--help' || command === '-h') {
@@ -39,6 +43,7 @@ if (!command || command === '--help' || command === '-h') {
     export-diagrams    Exporta diagramas Mermaid como imagens SVG/PNG
                        Opções: --format=svg|png  --output=<pasta>
                        Requer: npm install -g @mermaid-js/mermaid-cli
+    watch              Inicia o modo watch para atualização incremental do banco de conhecimento
 
   Fluxos principais no chat (após a instalação):
     /reversa          Descobre e documenta um sistema existente

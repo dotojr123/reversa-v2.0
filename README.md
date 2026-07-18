@@ -11,7 +11,13 @@
 [![Português Docs](https://img.shields.io/badge/DOCS-Portugu%C3%AAs-ffcc00?style=for-the-badge&logo=material-for-mkdocs&logoColor=black&labelColor=2d2d2d)](https://sandeco.github.io/reversa/pt/)<br>
 [![Español Docs](https://img.shields.io/badge/DOCS-Espa%C3%B1ol-c60b1e?style=for-the-badge&logo=material-for-mkdocs&logoColor=white&labelColor=2d2d2d)](https://sandeco.github.io/reversa/es/)
 
-Reversa is a specification reverse-engineering framework. Install it inside a legacy project and it coordinates a team of specialized AI agents to analyze the existing code and generate complete, traceable specifications ready for use by any coding agent.
+# Reversa
+
+> **Reversa Knowledge Operating System (Reversa KOS)**
+> 
+> A plataforma de conhecimento central para engenharia de software assistida por IA.
+
+Reversa is a framework for autonomous AI agents that generates technical documentation, diagrams, specs, traces issues, tests forward designs, and builds interactive mockups by reverse-engineering existing codebases.
 
 ---
 
@@ -336,6 +342,34 @@ Every statement in the specs is marked with:
 | 🟢 CONFIRMED | Extracted directly from code — can be cited with file and line |
 | 🟡 INFERRED | Deduced from patterns — may be wrong |
 | 🔴 GAP | Not determinable from code — requires human validation |
+
+---
+
+## Reversa KOS Pipeline (Fase 1)
+
+O Reversa KOS define um ciclo de vida rigoroso para os dados extraídos:
+
+```text
+Scanner (Agentes)
+       │
+       ▼
+Knowledge Object (Canonical JSON)
+       │
+       ▼
+Validation & Inference (Pipeline Core)
+       │
+       ▼
+Knowledge Core (Service)
+       │
+       ▼
+Knowledge Repository (Mediation)
+       │
+       ├──────── Storage Provider (SQLite/Neo4j)
+       │
+       └──────── Event Store (Auditoria)
+```
+
+Essa arquitetura orientada a interfaces garante total portabilidade entre armazenamentos.
 
 ---
 
